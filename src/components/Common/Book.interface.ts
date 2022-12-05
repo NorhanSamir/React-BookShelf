@@ -1,8 +1,8 @@
 interface BookInterface {
     title: string,
-    imageLinks: {thumbnail:string},
+    imageLinks: {thumbnail?:string},
     shelf: string,
-    authors:string,
+    authors?:string,
     id:string,
 }
 

@@ -36,11 +36,12 @@ export const Search: React.FC = () => {
 <div id="large-th">
     <div className={classes.container}>
 
-{filteredBooks.length > 0  && filteredBooks.map((value:BookInterface) => {
+{filteredBooks && filteredBooks.length > 0  && filteredBooks.map((value:BookInterface) => {
           return (
       <Book   key={value.id} id={value.id} authors={value.authors && value.authors[0]} imageLinks={value.imageLinks} shelf={value.shelf} title={value.title}/>
           );
         })} 
+        {!filteredBooks && <h1>No Books Found</h1>}
         </div>
         </div>
 </React.Fragment>

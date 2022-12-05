@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import BookInterface from './Book.interface';
 import classes from './Book.module.css'
 import * as BookApis from './BookApis'
@@ -11,6 +12,8 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
   }
 
   const [updateBook, setupdateBook] = useState();
+
+
   const updateBookStatus = (bookId: string, newStatus: string) => {
     BookApis.update(bookId, newStatus).then((res: any) => {
       setupdateBook(res);
@@ -41,4 +44,19 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
   );
 }
 
+
+const mapStateToProps = (state: any) => {
+  console.log(state)
+  return {
+    books: state.books,
+  };
+};
+const mapDispatchToProps = (dispatch: any) => {
+
+  return {
+    setupdateBook: (book:any) =>  {console.log(book);dispatch({ type: 'UPDATE_MOVEMENT', data: book })},
+  }
+};
+const bookC = connect(mapStateToProps, mapDispatchToProps)(Book);
+export default bookC;
 

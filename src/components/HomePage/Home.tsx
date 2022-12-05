@@ -3,8 +3,10 @@ import BookInterface from '../Common/Book.interface';
 import classes from './Home.module.css'
 import * as BookApis from '../Common/BookApis'
 import { Shelf } from '../Common/Shelf';
+
+import { connect } from 'react-redux';
 export const Home: React.FC = () => {
-  const [books, setResult] = useState<{ arrayRead: BookInterface[], arrayWantToRead: BookInterface[], arrayReading: BookInterface[], arrayNoStatus: BookInterface[] }>({ arrayRead: [], arrayWantToRead: [], arrayReading: [], arrayNoStatus: [] });
+  const [books, setResult] = useState<{ read: BookInterface[], wantToRead: BookInterface[], currentlyReading: BookInterface[], arrayNoStatus: BookInterface[] }>({ read: [], wantToRead: [], currentlyReading: [], arrayNoStatus: [] });
 
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
@@ -12,7 +14,6 @@ export const Home: React.FC = () => {
     Read: 'read',
     None: ''
   }
-
   useEffect(() => {
 
     BookApis.getAll().then((books) => {
@@ -36,9 +37,9 @@ export const Home: React.FC = () => {
         }
       }
       const booksArray = {
-        arrayRead: arrayRead, arrayWantToRead: arrayWantToRead, arrayReading: arrayReading, arrayNoStatus: arrayNoStatus
+        read: arrayRead, wantToRead: arrayWantToRead, currentlyReading: arrayReading, arrayNoStatus: arrayNoStatus
       }
-      setResult(booksArray);
+      setResult(booksArray)
     });
   }, []);
 
@@ -49,12 +50,12 @@ export const Home: React.FC = () => {
       <div id="large-th">
         <div className={classes.container}>
           <div>
-            <Shelf books={books.arrayRead} title={ShlfStatus.Read}></Shelf>
+           <Shelf books={books.read} title={ShlfStatus.Read}></Shelf>
 
             <hr />
-            <Shelf books={books.arrayReading} title={ShlfStatus.Currentlyreading}></Shelf>
+            <Shelf books={books.currentlyReading} title={ShlfStatus.Currentlyreading}></Shelf>
             <hr />
-            <Shelf books={books.arrayWantToRead} title={ShlfStatus.WantToRead}></Shelf>
+            <Shelf books={books.wantToRead} title={ShlfStatus.WantToRead}></Shelf>
 
           </div>
         </div>
@@ -62,4 +63,16 @@ export const Home: React.FC = () => {
     </React.Fragment>
   )
 }
+const mapStateToProps = (state: any) => {
+  return {
+    books: state.books,
+  };
+};
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setResult: (books:any) => dispatch({ type: 'UPDATEBOOKS', data: books }),
+  }
+};
+const HomeC = connect(mapStateToProps, mapDispatchToProps)(Home);
+export default HomeC;
 

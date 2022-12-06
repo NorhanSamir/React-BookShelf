@@ -136,3 +136,12 @@
     background-color: #ed3c57;
     color: white;
   }
+  .details_wrapper{
+    display: flex;
+    justify-content: end;
+  }
+  .link{
+    color: #ed3c57;
+    font-weight: bold;
+    margin: 10px 0;
+  }

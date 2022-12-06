@@ -12,9 +12,11 @@ export const Search: React.FC = () => {
     setMessage(e.target.value);
    BookApis.search(e.target.value,10).then((filterdBooks)=>{
     setFilteredBooks(filterdBooks)
-    console.log(filterdBooks)
-  })
+  }).catch((e)=> {
+    console.log('Error happened');
 
+  }
+  )
   };
  
  
@@ -41,7 +43,7 @@ export const Search: React.FC = () => {
       <Book   key={value.id} id={value.id} authors={value.authors && value.authors[0]} imageLinks={value.imageLinks} shelf={value.shelf} title={value.title}/>
           );
         })} 
-        {!filteredBooks && <h1>No Books Found</h1>}
+        {(!filteredBooks || !filteredBooks.length)  && <h1>No Books Found</h1>}
         </div>
         </div>
 </React.Fragment>

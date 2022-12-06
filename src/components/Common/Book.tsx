@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { setBooks } from '../../reducers/bookReducer';
 import BookInterface from './Book.interface';
 import classes from './Book.module.css'
 import * as BookApis from './BookApis'
@@ -12,11 +15,15 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
   }
 
   const [updateBook, setupdateBook] = useState();
+  const dispatch = useDispatch();
 
 
   const updateBookStatus = (bookId: string, newStatus: string) => {
     BookApis.update(bookId, newStatus).then((res: any) => {
+      console.log(res)
       setupdateBook(res);
+      dispatch(updateBook({id,newStatus}));
+
       console.log(updateBook)
     })
   }
@@ -35,7 +42,14 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
             <button onClick={() => updateBookStatus(props.id, ShlfStatus.WantToRead)} className={classes.btn + ' ' + `${props.shelf === ShlfStatus.WantToRead ? classes.btn__outline : ""}`}>Want to Read</button>
             <button onClick={() => updateBookStatus(props.id, ShlfStatus.Read)} className={classes.btn + ' ' + `${props.shelf === ShlfStatus.Read ? classes.btn__outline : ""}`}>Read</button>
             {!props.shelf && <button onClick={() => updateBookStatus(props.id, ShlfStatus.None)} className={classes.btn + ' ' + `${!props.shelf ? classes.btn__outline : ""}`}>none</button>}
+           
+
           </div>
+          <div className={classes.details_wrapper}>
+          <NavLink className={classes.link} to={`/details/${props.id}`} >Details</NavLink>
+
+          </div>
+
         </div>
       </div>
     </React.Fragment>

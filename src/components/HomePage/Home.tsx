@@ -5,8 +5,11 @@ import * as BookApis from '../Common/BookApis'
 import { Shelf } from '../Common/Shelf';
 
 import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { selectCount, setBooks } from '../../reducers/bookReducer';
+import { useSelector } from 'react-redux';
 export const Home: React.FC = () => {
-  const [books, setResult] = useState<{ read: BookInterface[], wantToRead: BookInterface[], currentlyReading: BookInterface[], arrayNoStatus: BookInterface[] }>({ read: [], wantToRead: [], currentlyReading: [], arrayNoStatus: [] });
+//  const [books, setBoooks] = useState<{ read: BookInterface[], wantToRead: BookInterface[], currentlyReading: BookInterface[], arrayNoStatus: BookInterface[] }>({ read: [], wantToRead: [], currentlyReading: [], arrayNoStatus: [] });
 
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
@@ -14,9 +17,14 @@ export const Home: React.FC = () => {
     Read: 'read',
     None: ''
   }
-  useEffect(() => {
+  const books =  useSelector(selectCount);
 
-    BookApis.getAll().then((books) => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getBoooks = async () => {
+      const books = await  BookApis.getAll();
 
       const arrayRead = [];
       const arrayWantToRead = [];
@@ -39,40 +47,32 @@ export const Home: React.FC = () => {
       const booksArray = {
         read: arrayRead, wantToRead: arrayWantToRead, currentlyReading: arrayReading, arrayNoStatus: arrayNoStatus
       }
-      setResult(booksArray)
-    });
+      //setBoooks(booksArray)
+      dispatch(setBooks(booksArray))};
+      getBoooks();
+
+      console.log(books)
+
   }, []);
 
 
   return (
 
     <React.Fragment>
-      <div id="large-th">
+   <div id="large-th">
         <div className={classes.container}>
           <div>
-           <Shelf books={books.read} title={ShlfStatus.Read}></Shelf>
+            {books.bookRed && books.bookRed.read && <><Shelf books={books.bookRed.read} title={ShlfStatus.Read}></Shelf>
 
             <hr />
-            <Shelf books={books.currentlyReading} title={ShlfStatus.Currentlyreading}></Shelf>
+            <Shelf books={books.bookRed.currentlyReading} title={ShlfStatus.Currentlyreading}></Shelf>
             <hr />
-            <Shelf books={books.wantToRead} title={ShlfStatus.WantToRead}></Shelf>
-
+            <Shelf books={books.bookRed.wantToRead} title={ShlfStatus.WantToRead}></Shelf></>
+  }
           </div>
         </div>
-      </div>
-    </React.Fragment>
+      </div>    </React.Fragment>
   )
 }
-const mapStateToProps = (state: any) => {
-  return {
-    books: state.books,
-  };
-};
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setResult: (books:any) => dispatch({ type: 'UPDATEBOOKS', data: books }),
-  }
-};
-const HomeC = connect(mapStateToProps, mapDispatchToProps)(Home);
-export default HomeC;
+
 

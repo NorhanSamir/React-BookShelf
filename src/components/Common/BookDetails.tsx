@@ -4,26 +4,29 @@ import * as BookApis from '../Common/BookApis'
 import classes from './Search.module.css';
 import { useParams, useSearchParams } from 'react-router-dom';
 import BookInterface from '../Common/Book.interface'
-export const BookDetails: React.FC = (props) => {
-  const [bookDetails, setBookDetails] = useState({book:{title:''}})
+export const BookDetails: React.FC = () => {
+  const [bookDetails, setBookDetails] = useState<BookInterface>({title: 'Jon',imageLinks:{thumbnail:''},authors:'',id:'',shelf:'',description:''});
   const params:any = useParams()
 
   useEffect(() => {
+    const getBook = async () => {
+      const book = await  BookApis.get(params.id);
+      setBookDetails(book);
+    };
+  
+    getBook();
 
-    BookApis.get(params.id).then((book) => {
-
-        setBookDetails(book)
-        console.log(book)
-    });
+  
   }, []);
- 
-
+  
     return (
       <React.Fragment>
-{bookDetails && bookDetails.book.title}
-      
-</React.Fragment>
-
+          <img src={bookDetails.imageLinks.thumbnail} alt="image thumb"/>
+          <br/>
+          {bookDetails.authors }
+       <h2> {bookDetails.title}</h2>
+        {bookDetails.description}
+t</React.Fragment>
   );
 }
 

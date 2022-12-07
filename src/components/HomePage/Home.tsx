@@ -17,7 +17,6 @@ export const Home: React.FC = () => {
     Read: 'read',
     None: ''
   }
-  const books =  useSelector(selectCount);
 
 
   const dispatch = useDispatch();
@@ -25,36 +24,34 @@ export const Home: React.FC = () => {
   useEffect(() => {
     const getBoooks = async () => {
       const books = await  BookApis.getAll();
-
-      const arrayRead = [];
-      const arrayWantToRead = [];
-      const arrayReading = [];
-      const arrayNoStatus = [];
-      for (let index = 0; index < books.length; index++) {
-        if (books[index].shelf === ShlfStatus.Read) {
-          arrayRead.push(books[index])
-
-        } else if (books[index].shelf === ShlfStatus.Currentlyreading) {
-          arrayReading.push(books[index])
-
-        } else if (books[index].shelf === ShlfStatus.WantToRead) {
-          arrayWantToRead.push(books[index])
-
-        } else {
-          arrayNoStatus.push(books[index])
-        }
-      }
-      const booksArray = {
-        read: arrayRead, wantToRead: arrayWantToRead, currentlyReading: arrayReading, arrayNoStatus: arrayNoStatus
-      }
       //setBoooks(booksArray)
-      dispatch(setBooks(booksArray))};
+      dispatch(setBooks(books))};
       getBoooks();
-
-      console.log(books)
-
   }, []);
+  const booksSe =  useSelector(selectCount);
 
+const booksFromSelectors=booksSe.bookRed.Books;
+  const arrayRead = [];
+  const arrayWantToRead = [];
+  const arrayReading = [];
+  const arrayNoStatus = [];
+  for (let index = 0; index < booksFromSelectors.length; index++) {
+    if (booksFromSelectors[index].shelf === ShlfStatus.Read) {
+      arrayRead.push(booksFromSelectors[index])
+
+    } else if (booksFromSelectors[index].shelf === ShlfStatus.Currentlyreading) {
+      arrayReading.push(booksFromSelectors[index])
+
+    } else if (booksFromSelectors[index].shelf === ShlfStatus.WantToRead) {
+      arrayWantToRead.push(booksFromSelectors[index])
+
+    } else {
+      arrayNoStatus.push(booksFromSelectors[index])
+    }
+  }
+  const booksArray = {
+    read: arrayRead, wantToRead: arrayWantToRead, currentlyReading: arrayReading, arrayNoStatus: arrayNoStatus
+  }
 
   return (
 
@@ -62,13 +59,13 @@ export const Home: React.FC = () => {
    <div id="large-th">
         <div className={classes.container}>
           <div>
-            {books.bookRed && books.bookRed.read && <><Shelf books={books.bookRed.read} title={ShlfStatus.Read}></Shelf>
+          {<><Shelf books={booksArray.read} title={ShlfStatus.Read}></Shelf>
 
-            <hr />
-            <Shelf books={books.bookRed.currentlyReading} title={ShlfStatus.Currentlyreading}></Shelf>
-            <hr />
-            <Shelf books={books.bookRed.wantToRead} title={ShlfStatus.WantToRead}></Shelf></>
-  }
+<hr />
+<Shelf books={booksArray.currentlyReading} title={ShlfStatus.Currentlyreading}></Shelf>
+<hr />
+<Shelf books={booksArray.wantToRead} title={ShlfStatus.WantToRead}></Shelf></>
+}
           </div>
         </div>
       </div>    </React.Fragment>

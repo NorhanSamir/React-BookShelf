@@ -20,11 +20,9 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
 
   const updateBookStatus = (bookId: string, newStatus: string) => {
     BookApis.update(bookId, newStatus).then((res: any) => {
-      console.log(res)
       setupdateBook(res);
-      dispatch(updateBook({id,newStatus}));
+      dispatch(setBooks(newStatus));
 
-      console.log(updateBook)
     })
   }
   return (

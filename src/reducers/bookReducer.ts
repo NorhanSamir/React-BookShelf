@@ -9,14 +9,15 @@ export const BookSlice = createSlice({
   initialState: [],
   reducers: {
    
-    updateBook: (state, action: PayloadAction<BookInterface>) => {
-        ...state,...action.payload.book
-      }),
-      setBooks: (state, action: PayloadAction<any>) =>( {
-
-
+    updateBook: (state, action: PayloadAction<BookInterface>) => ({
         ...state,...action.payload
       }),
+      setBooks: (state, action) =>{
+        return {
+          ...state,
+          Books: action.payload,
+        }},
+     
   
     },
  

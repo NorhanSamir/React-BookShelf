@@ -38,9 +38,9 @@ export const Search: React.FC = () => {
 <div id="large-th">
     <div className={classes.container}>
 
-{filteredBooks && filteredBooks.length > 0  && filteredBooks.map((value:BookInterface) => {
+{filteredBooks && filteredBooks.length > 0  && filteredBooks.map((value:any) => {
           return (
-      <Book   key={value.id} id={value.id} authors={value.authors && value.authors[0]} imageLinks={value.imageLinks} shelf={value.shelf} title={value.title}/>
+      <Book   key={value.id} book={value}/>
           );
         })} 
         {(!filteredBooks || !filteredBooks.length)  && <h1>No Books Found</h1>}

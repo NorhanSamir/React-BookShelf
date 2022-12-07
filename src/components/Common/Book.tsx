@@ -6,7 +6,7 @@ import { setBooks } from '../../reducers/bookReducer';
 import BookInterface from './Book.interface';
 import classes from './Book.module.css'
 import * as BookApis from './BookApis'
-export const Book: React.FC<BookInterface> = (props: BookInterface) => {
+export const Book: React.FC<any> = (props: any) => {
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
     WantToRead: 'wantToRead',
@@ -18,10 +18,10 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
   const dispatch = useDispatch();
 
 
-  const updateBookStatus = (bookId: string, newStatus: string) => {
-    BookApis.update(bookId, newStatus).then((res: any) => {
+  const updateBookStatus = (book:any, newStatus: string) => {
+    BookApis.update(book.id, newStatus).then((res: any) => {
       setupdateBook(res);
-      dispatch(setBooks(newStatus));
+      dispatch(setBooks(book));
 
     })
   }
@@ -30,21 +30,21 @@ export const Book: React.FC<BookInterface> = (props: BookInterface) => {
 
       <div className={classes.book}>
         <div className={classes.cover}>
-          <img src={props.imageLinks.thumbnail} alt="image thumb"/>
+          <img src={props.book.imageLinks && props.book.imageLinks.thumbnail} alt="image thumb"/>
         </div>
         <div className={classes.description}>
-          <p className={classes.title}>{props.title}<br />
-            <span className={classes.author}>{props.authors}</span></p>
+          <p className={classes.title}>{props.book.title}<br />
+            <span className={classes.author}>{props.book.authors}</span></p>
           <div className={classes.btn_wrapper}>
-            <button onClick={() => updateBookStatus(props.id, ShlfStatus.Currentlyreading)} className={classes.btn + ' ' + `${props.shelf === ShlfStatus.Currentlyreading ? classes.btn__outline : ""}`}>Currently Reading</button>
-            <button onClick={() => updateBookStatus(props.id, ShlfStatus.WantToRead)} className={classes.btn + ' ' + `${props.shelf === ShlfStatus.WantToRead ? classes.btn__outline : ""}`}>Want to Read</button>
-            <button onClick={() => updateBookStatus(props.id, ShlfStatus.Read)} className={classes.btn + ' ' + `${props.shelf === ShlfStatus.Read ? classes.btn__outline : ""}`}>Read</button>
-            {!props.shelf && <button onClick={() => updateBookStatus(props.id, ShlfStatus.None)} className={classes.btn + ' ' + `${!props.shelf ? classes.btn__outline : ""}`}>none</button>}
+            <button onClick={() => updateBookStatus(props.book, ShlfStatus.Currentlyreading)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.Currentlyreading ? classes.btn__outline : ""}`}>Currently Reading</button>
+            <button onClick={() => updateBookStatus(props.book, ShlfStatus.WantToRead)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.WantToRead ? classes.btn__outline : ""}`}>Want to Read</button>
+            <button onClick={() => updateBookStatus(props.book, ShlfStatus.Read)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.Read ? classes.btn__outline : ""}`}>Read</button>
+            {!props.book.shelf && <button onClick={() => updateBookStatus(props.book, ShlfStatus.None)} className={classes.btn + ' ' + `${!props.book.shelf ? classes.btn__outline : ""}`}>none</button>}
            
 
           </div>
           <div className={classes.details_wrapper}>
-          <NavLink className={classes.link} to={`/details/${props.id}`} >Details</NavLink>
+          <NavLink className={classes.link} to={`/details/${props.book.id}`} >Details</NavLink>
 
           </div>
 

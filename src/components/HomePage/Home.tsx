@@ -20,6 +20,7 @@ export const Home: React.FC = () => {
 
 
   const dispatch = useDispatch();
+  const booksSelector =  useSelector(selectCount);
 
   useEffect(() => {
     const getBoooks = async () => {
@@ -28,13 +29,14 @@ export const Home: React.FC = () => {
       dispatch(setBooks(books))};
       getBoooks();
   }, []);
-  const booksSe =  useSelector(selectCount);
 
-const booksFromSelectors=booksSe.bookRed.Books;
+const booksFromSelectors=booksSelector.bookRed.Books;
   const arrayRead = [];
   const arrayWantToRead = [];
   const arrayReading = [];
   const arrayNoStatus = [];
+  console.log(booksFromSelectors)
+  if(booksFromSelectors){
   for (let index = 0; index < booksFromSelectors.length; index++) {
     if (booksFromSelectors[index].shelf === ShlfStatus.Read) {
       arrayRead.push(booksFromSelectors[index])
@@ -49,6 +51,7 @@ const booksFromSelectors=booksSe.bookRed.Books;
       arrayNoStatus.push(booksFromSelectors[index])
     }
   }
+}
   const booksArray = {
     read: arrayRead, wantToRead: arrayWantToRead, currentlyReading: arrayReading, arrayNoStatus: arrayNoStatus
   }

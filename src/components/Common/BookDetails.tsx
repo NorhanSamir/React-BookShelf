@@ -21,12 +21,15 @@ export const BookDetails: React.FC = () => {
   
     return (
       <React.Fragment>
-          <img src={bookDetails.imageLinks.thumbnail} alt="image thumb"/>
+        {bookDetails && <>          <img src={bookDetails.imageLinks.thumbnail} alt="image thumb"/>
           <br/>
           {bookDetails.authors }
        <h2> {bookDetails.title}</h2>
         {bookDetails.description}
-t</React.Fragment>
+        
+</>
+      }
+</React.Fragment>
   );
 }
 

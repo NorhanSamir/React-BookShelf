@@ -1,6 +1,5 @@
 import React from 'react';
 import { Book } from './Book';
-import BookInterface from './Book.interface';
 export const Shelf: React.FC<{ books: any[], title: string }> = (props: { books: any[], title: string }) => {
     return (
         <React.Fragment>

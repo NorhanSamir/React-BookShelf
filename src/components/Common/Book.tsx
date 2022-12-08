@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { setBooks } from '../../reducers/bookReducer';
+import { updateBook } from '../../reducers/bookReducer';
 import BookInterface from './Book.interface';
 import classes from './Book.module.css'
 import * as BookApis from './BookApis'
+import { Shelf } from './Shelf';
 export const Book: React.FC<any> = (props: any) => {
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
@@ -14,14 +15,15 @@ export const Book: React.FC<any> = (props: any) => {
     None: ''
   }
 
-  const [updateBook, setupdateBook] = useState();
   const dispatch = useDispatch();
 
+  const updateBookStatus = (book:BookInterface, newStatus: string) => {
 
-  const updateBookStatus = (book:any, newStatus: string) => {
+   
+
     BookApis.update(book.id, newStatus).then((res: any) => {
-      setupdateBook(res);
-      dispatch(setBooks(book));
+
+     dispatch(updateBook({id: book.id,newStatus}));
 
     })
   }
@@ -36,10 +38,9 @@ export const Book: React.FC<any> = (props: any) => {
           <p className={classes.title}>{props.book.title}<br />
             <span className={classes.author}>{props.book.authors}</span></p>
           <div className={classes.btn_wrapper}>
-            <button onClick={() => updateBookStatus(props.book, ShlfStatus.Currentlyreading)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.Currentlyreading ? classes.btn__outline : ""}`}>Currently Reading</button>
-            <button onClick={() => updateBookStatus(props.book, ShlfStatus.WantToRead)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.WantToRead ? classes.btn__outline : ""}`}>Want to Read</button>
-            <button onClick={() => updateBookStatus(props.book, ShlfStatus.Read)} className={classes.btn + ' ' + `${props.book.shelf === ShlfStatus.Read ? classes.btn__outline : ""}`}>Read</button>
-            {!props.book.shelf && <button onClick={() => updateBookStatus(props.book, ShlfStatus.None)} className={classes.btn + ' ' + `${!props.book.shelf ? classes.btn__outline : ""}`}>none</button>}
+          {props.book.shelf != ShlfStatus.Currentlyreading &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.Currentlyreading)} className={classes.btn}>Currently Reading</button>}
+            {props.book.shelf != ShlfStatus.WantToRead &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.WantToRead)} className={classes.btn}>Want to Read</button>}
+           {props.book.shelf  != ShlfStatus.Read && <button onClick={() => updateBookStatus(props.book, ShlfStatus.Read)} className={classes.btn}>Read</button>}
            
 
           </div>
@@ -56,19 +57,4 @@ export const Book: React.FC<any> = (props: any) => {
   );
 }
 
-
-const mapStateToProps = (state: any) => {
-  console.log(state)
-  return {
-    books: state.books,
-  };
-};
-const mapDispatchToProps = (dispatch: any) => {
-
-  return {
-    setupdateBook: (book:any) =>  {console.log(book);dispatch({ type: 'UPDATE_MOVEMENT', data: book })},
-  }
-};
-const bookC = connect(mapStateToProps, mapDispatchToProps)(Book);
-export default bookC;
 

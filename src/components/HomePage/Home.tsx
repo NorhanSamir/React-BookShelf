@@ -6,10 +6,9 @@ import { Shelf } from '../Common/Shelf';
 
 import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { selectCount, setBooks } from '../../reducers/bookReducer';
+import { selectBooks, setBooks } from '../../reducers/bookReducer';
 import { useSelector } from 'react-redux';
 export const Home: React.FC = () => {
-//  const [books, setBoooks] = useState<{ read: BookInterface[], wantToRead: BookInterface[], currentlyReading: BookInterface[], arrayNoStatus: BookInterface[] }>({ read: [], wantToRead: [], currentlyReading: [], arrayNoStatus: [] });
 
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
@@ -20,7 +19,7 @@ export const Home: React.FC = () => {
 
 
   const dispatch = useDispatch();
-  const booksSelector =  useSelector(selectCount);
+  const booksSelector =  useSelector(selectBooks);
 
   useEffect(() => {
     const getBoooks = async () => {
@@ -35,7 +34,6 @@ const booksFromSelectors=booksSelector.bookRed.Books;
   const arrayWantToRead = [];
   const arrayReading = [];
   const arrayNoStatus = [];
-  console.log(booksFromSelectors)
   if(booksFromSelectors){
   for (let index = 0; index < booksFromSelectors.length; index++) {
     if (booksFromSelectors[index].shelf === ShlfStatus.Read) {

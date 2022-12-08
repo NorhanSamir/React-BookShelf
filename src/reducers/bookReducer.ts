@@ -9,11 +9,14 @@ export const BookSlice = createSlice({
   initialState: [],
   reducers: {
    
-    updateBook: (state, action: PayloadAction<any>) => {
-      const found = state.find((element:any) => element.id == action.payload.id);
-      return{
-        ...state,...action.payload
-      }
+    updateBook: (state:any, {payload:{id,newStatus}}) => {
+
+      const updatedBook: BookInterface = state.Books.find((book:any) => book.id === id);
+
+      updatedBook.shelf= newStatus
+
+      state.Books = [...state.Books]
+
     },
       setBooks: (state, action) =>{
         return {
@@ -21,14 +24,15 @@ export const BookSlice = createSlice({
           Books: action.payload,
         }},
       
-  
+        clearBooks: (state,action) =>{
+          return selectBooks(action.payload)},
     },
  
 });
 
 // this is for dispatch
-export const { updateBook, setBooks} = BookSlice.actions;
-export const selectCount = (state:any) => state
+export const { updateBook, setBooks,clearBooks} = BookSlice.actions;
+export const selectBooks = (state:any) => state
 
 // this is for configureStore
 export default BookSlice.reducer;

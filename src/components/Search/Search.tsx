@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Book } from '../Common/Book';
 import * as BookApis from '../Common/BookApis'
 import classes from './Search.module.css';
 import BookInterface from '../Common/Book.interface'
+import { useDispatch } from 'react-redux';
+import { clearBooks, selectBooks, setBooks } from '../../reducers/bookReducer';
+import { useSelector } from 'react-redux';
 export const Search: React.FC = () => {
   const [message, setMessage] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
 
- 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearBooks([]));
+  }, []);
+  const booksSelector =  useSelector(selectBooks);
+
   const handleChange = (e: { target: { value: string; }; }) => {
     setMessage(e.target.value);
    BookApis.search(e.target.value,10).then((filterdBooks)=>{
+    dispatch(setBooks(filterdBooks));
     setFilteredBooks(filterdBooks)
   }).catch((e)=> {
     console.log('Error happened');
-
   }
   )
   };
+  const booksFromSelectors=booksSelector.bookRed.Books;
+
  
  
     return (
@@ -38,12 +49,12 @@ export const Search: React.FC = () => {
 <div id="large-th">
     <div className={classes.container}>
 
-{filteredBooks && filteredBooks.length > 0  && filteredBooks.map((value:any) => {
+{booksFromSelectors && booksFromSelectors.length > 0  && booksFromSelectors.map((value:BookInterface) => {
           return (
       <Book   key={value.id} book={value}/>
           );
         })} 
-        {(!filteredBooks || !filteredBooks.length)  && <h1>No Books Found</h1>}
+        {(!booksFromSelectors || !booksFromSelectors.length)  && <h1>No Books Found</h1>}
         </div>
         </div>
 </React.Fragment>

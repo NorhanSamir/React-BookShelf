@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Book } from '../Common/Book';
 import * as BookApis from '../Common/BookApis'
 import classes from './Search.module.css';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookInterface from '../Common/Book.interface'
 export const BookDetails: React.FC = () => {
   const [bookDetails, setBookDetails] = useState<BookInterface>({title: 'Jon',imageLinks:{thumbnail:''},authors:'',id:'',shelf:'',description:''});

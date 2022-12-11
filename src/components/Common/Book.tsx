@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { updateBook } from '../../reducers/bookReducer';
 import BookInterface from './Book.interface';
 import classes from './Book.module.css'
 import * as BookApis from './BookApis'
-import { Shelf } from './Shelf';
 export const Book: React.FC<any> = (props: any) => {
   const ShlfStatus = {
     Currentlyreading: 'currentlyReading',
@@ -32,15 +30,15 @@ export const Book: React.FC<any> = (props: any) => {
 
       <div className={classes.book}>
         <div className={classes.cover}>
-          <img src={props.book.imageLinks && props.book.imageLinks.thumbnail} alt="image thumb"/>
+          <img src={props.book.imageLinks && props.book.imageLinks.thumbnail} alt="thumb"/>
         </div>
         <div className={classes.description}>
           <p className={classes.title}>{props.book.title}<br />
             <span className={classes.author}>{props.book.authors}</span></p>
           <div className={classes.btn_wrapper}>
-          {props.book.shelf != ShlfStatus.Currentlyreading &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.Currentlyreading)} className={classes.btn}>Currently Reading</button>}
-            {props.book.shelf != ShlfStatus.WantToRead &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.WantToRead)} className={classes.btn}>Want to Read</button>}
-           {props.book.shelf  != ShlfStatus.Read && <button onClick={() => updateBookStatus(props.book, ShlfStatus.Read)} className={classes.btn}>Read</button>}
+          {props.book.shelf !== ShlfStatus.Currentlyreading &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.Currentlyreading)} className={classes.btn}>Currently Reading</button>}
+            {props.book.shelf !== ShlfStatus.WantToRead &&  <button onClick={() => updateBookStatus(props.book, ShlfStatus.WantToRead)} className={classes.btn}>Want to Read</button>}
+           {props.book.shelf  !== ShlfStatus.Read && <button onClick={() => updateBookStatus(props.book, ShlfStatus.Read)} className={classes.btn}>Read</button>}
            
 
           </div>

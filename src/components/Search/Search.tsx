@@ -8,12 +8,12 @@ import { clearBooks, selectBooks, setBooks } from '../../reducers/bookReducer';
 import { useSelector } from 'react-redux';
 export const Search: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [filteredBooks, setFilteredBooks] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(clearBooks([]));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const booksSelector =  useSelector(selectBooks);
 
@@ -21,7 +21,6 @@ export const Search: React.FC = () => {
     setMessage(e.target.value);
    BookApis.search(e.target.value,10).then((filterdBooks)=>{
     dispatch(setBooks(filterdBooks));
-    setFilteredBooks(filterdBooks)
   }).catch((e)=> {
     console.log('Error happened');
   }

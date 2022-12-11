@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import BookInterface from '../Common/Book.interface';
+import React, { useEffect } from 'react';
 import classes from './Home.module.css'
 import * as BookApis from '../Common/BookApis'
 import { Shelf } from '../Common/Shelf';
 
-import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { selectBooks, setBooks } from '../../reducers/bookReducer';
 import { useSelector } from 'react-redux';
@@ -27,6 +25,7 @@ export const Home: React.FC = () => {
       //setBoooks(booksArray)
       dispatch(setBooks(books))};
       getBoooks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 const booksFromSelectors=booksSelector.bookRed.Books;
